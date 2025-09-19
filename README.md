@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+# Mejuri Shopping App Component
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Live Demo
+Experience the app live at: [https://mejuri.netlify.app/](https://mejuri.netlify.app/)
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+This React-based navbar component powers a shopping app with the following capabilities:
 
-### `npm start`
+- **Dynamic Cart Count**: Displays the total number of items (e.g., "Checkout(10)") on the shopping bag icon and in the cart preview header, based on the sum of item quantities.
+- **Cart Preview Modal**: A toggleable modal featuring a fixed "Checkout" header with item count, a scrollable list of cart items (thumbnails, titles, and prices), and a fixed footer with the estimated total price and checkout button.
+- **Item Management**: Allows users to add items to the cart and remove them with real-time updates using Redux.
+- **Responsive Design**: Adjusts the cart preview width and product grid layout for desktop, tablet, and mobile screens.
+- **Error Handling**: Logs errors if the shopping bag image fails to load.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
+- **React**: Builds the component and manages state with hooks (`useState`, `useEffect`).
+- **Redux**: Handles cart state management for adding and removing items.
+- **CSS**: Custom styles with flexbox for layout and responsive design.
+- **JavaScript**: Manages logic and user interactions.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+To run this shopping app locally on your machine as of September 18, 2025, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/oosunkeye/mejuri.git
+   cd mejuri
+   ```
 
-### `npm run build`
+2. **Install Dependencies**
+   Ensure Node.js is installed, then run:
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Set Up Redux**
+   - Install Redux and React-Redux if not already included:
+     ```bash
+     npm install redux react-redux
+     ```
+   - Configure a Redux store with an initial `cart.items` state. Example:
+     ```javascript
+     // store.js
+     import { createStore } from 'redux';
+     const initialState = { cart: { items: [] } };
+     const reducer = (state = initialState, action) => {
+       switch (action.type) {
+         case 'cart/addToCart':
+           return { ...state, cart: { items: [...state.cart.items, action.payload] } };
+         case 'cart/removeFromCart':
+           return { ...state, cart: { items: state.cart.items.filter(item => item.id !== action.payload) } };
+         default:
+           return state;
+       }
+     };
+     export default createStore(reducer);
+     ```
+   - Connect the store to your app (e.g., in `index.js`):
+     ```javascript
+     import { Provider } from 'react-redux';
+     import store from './store';
+     import Navbar from './Navbar';
+     ReactDOM.render(
+       <Provider store={store}>
+         <Navbar />
+       </Provider>,
+       document.getElementById('root')
+     );
+     ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Run the Project**
+   - Start the development server:
+     ```bash
+     npm start
+     ```
+   - Open `http://localhost:3000` in your browser to use the app.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Notes
+- Ensure the `assets/shopping-bag.png` file is in the `assets` folder, or update the path in `Navbar.js` if different.
+- JavaScript must be enabled in your browser to run the app.
